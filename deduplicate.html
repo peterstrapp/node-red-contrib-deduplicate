@@ -7,10 +7,10 @@
             expiry: {value: 5, validate:RED.validators.number()}
         },
         inputs:1,
-        outputs:1,
-        icon: "file.png",
+        outputs:2,
+        icon: "switch.png",
         label: function() {
-            return this.name||"deduplicate";
+            return this.name||"Deduplicate";
         }
     });
 </script>
@@ -27,5 +27,5 @@
 </script>
 
 <script type="text/x-red" data-help-name="deduplicate">
-    <p>A node that recieves data from 433MHz reciever on a RaspberryPi.</p>
+    <p>Node-RED node that removes duplicate messages.</p>
 </script>
