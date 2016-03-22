@@ -28,9 +28,7 @@ module.exports = function (RED) {
                 node.cache = [];
             }
 
-            node.warn('node.keyproperty: ' + node.keyproperty);
             var key = node.keyproperty ? msg.payload[node.keyproperty] : msg.payload;
-            node.warn('key stringify: ' + JSON.stringify(key));
             if (cacheContains(JSON.stringify(key))) {
                 node.send([null, msg]);
                 return;
