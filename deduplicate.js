@@ -3,6 +3,7 @@ module.exports = function (RED) {
     function DeDuplicate(config) {
         RED.nodes.createNode(this, config);
         this.expiry = config.expiry;
+        this.keyproperty = config.keyproperty;
         var node = this;
 
         function expired(entry) {
@@ -27,12 +28,13 @@ module.exports = function (RED) {
                 node.cache = [];
             }
 
-            if (cacheContains(JSON.stringify(msg.payload))) {
+            var key = node.keyproperty ? msg.payload[node.keyproperty] : msg.payload;
+            if (cacheContains(JSON.stringify(key))) {
                 node.send([null, msg]);
                 return;
             }
 
-            node.cache.push({expiry: new Date().getTime() + node.expiry * 1000, key: JSON.stringify(msg.payload)});
+            node.cache.push({expiry: new Date().getTime() + node.expiry * 1000, key: JSON.stringify(key)});
             node.send([msg, null]);
         });
     }
