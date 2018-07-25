@@ -5,6 +5,8 @@
         defaults: {
             name: {value:""},
             keyproperty: {keyproperty:""},
+            registryclass: {value:""},
+            noderole: {value:"standalone"},
             expiry: {value: 5, validate:RED.validators.number()}
         },
         inputs: 1,
@@ -21,9 +23,25 @@
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+
+
     <div class="form-row">
-        <label for="node-input-keyproperty"><i class="icon-tag"></i> Key Property</label>
-        <input type="text" id="node-input-keyproperty" placeholder="Key Property (optional)">
+        <label for="node-input-noderole"><i class="icon-tag"></i> Node role</label>
+        <select id="node-input-noderole" style="width:60%; margin-right:5px;">
+            <option value="standalone">Add+Deduplicate within node</option>
+            <option value="save">Add values to group registry class</option>
+            <option value="deduplicate">Deduplicate based on registry class</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-registryclass"><i class="icon-tag"></i> Registry Class name</label>
+        <input type="text" id="node-input-registryclass" placeholder="Registry class (optional)">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-keyproperty"><i class="icon-tag"></i> Msg Key Property</label>
+        <input type="text" id="node-input-keyproperty" placeholder="Msg Key Property (optional)">
     </div>
     <div class="form-row">
         <label for="node-input-expiry"><i class="icon-tag"></i> Expiry (seconds)</label>
@@ -32,5 +50,5 @@
 </script>
 
 <script type="text/x-red" data-help-name="deduplicate">
-    <p>Node-RED node that filters duplicate messages.</p>
+    <p><b>Node-RED node that filters duplicate messages.</b><br> First output will return non-duplicated values, second one will output duplicated.<br><br><b>Analysis will be done grouped by topic if defined.</b><br>By default payload value is considered for analysis - specific key can be specified in "Msg Key Property".<br><br><b>Node role may be:</b><ul><li><u>Add+Deduplicate within node:</u> analysis within given inputs of node</li><li><u>Registry class</u> Allow addition or analysis upon a centrally managed list of values, cross nodes and based on the defined registry name</li></ul> </p>
 </script>
