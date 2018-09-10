@@ -1,4 +1,4 @@
-node-red-contrib-deduplicate
+node-red-contrib-deduplicate-adv
 ============================
 Node-RED node that filters duplicate messages. First output will return non-duplicated values, second one will output duplicated.
 
