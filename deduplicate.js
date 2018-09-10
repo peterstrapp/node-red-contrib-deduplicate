@@ -35,7 +35,7 @@ module.exports = function (RED) {
 
 
             var key = node.keyproperty ? msg.payload[node.keyproperty] : msg.payload;
-            var topic = (msg.topic || "")
+            var topic = (msg.topic || "default_topic")
 
             if (node.storage.get(node.registry) === undefined) {
                 node.storage.set(node.registry,{})
