@@ -1,11 +1,11 @@
 {
   "name": "node-red-contrib-deduplicate-adv",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Node-RED node that filters duplicate messages",
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/peterstrapp/node-red-contrib-deduplicate"
+    "url": "https://github.com/emms007/node-red-contrib-deduplicate-adv"
   },
   "keywords": [
     "node-red",
@@ -27,6 +27,9 @@
     {
       "name": "Greg Stephens",
       "email": "greg@udon.org"
+    },    {
+      "name": "emms007",
+      "email": "emms007@gmail.com"
     }
   ]
 }
