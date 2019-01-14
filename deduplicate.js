@@ -21,7 +21,11 @@ module.exports = function (RED) {
 
             for (i = 0; i < known_entries.length; i += 1) {
                 if (known_entries[i].key === key) {
-                    if (!expired(known_entries[i])) {
+                    if (!expired(known_entries[i])) {							
+						if (config.expirypolicy=='extend') {
+							known_entries[i].expiry=new Date().getTime() + node.expiry * 1000;
+							node.storage.set(node.registry+'["'+topic+'"]',known_entries)							
+						}
                         return true;
                     }
                     known_entries.splice(i, 1);
