@@ -5,6 +5,7 @@
         defaults: {
             name: {value:""},
             keyproperty: {keyproperty:""},
+			expirypolicy: {value:"keep"},
             registryclass: {value:""},
             noderole: {value:"standalone"},
             expiry: {value: 5, validate:RED.validators.number()}
@@ -34,6 +35,7 @@
         </select>
     </div>
 
+	
     <div class="form-row">
         <label for="node-input-registryclass"><i class="icon-tag"></i> Registry Class name</label>
         <input type="text" id="node-input-registryclass" placeholder="Registry class (optional)">
@@ -47,6 +49,15 @@
         <label for="node-input-expiry"><i class="icon-tag"></i> Expiry (seconds)</label>
         <input type="text" id="node-input-expiry" placeholder="Cache expiry (seconds)">
     </div>
+	
+	<div class="form-row">
+        <label for="node-input-expirypolicy"><i class="icon-tag"></i> Upon duplicate found</label>
+        <select id="node-input-expirypolicy" style="width:60%; margin-right:5px;">
+            <option value="keep">Keep initial cache expiry time</option>
+            <option value="extend">Extend cache expiry with new time</option>
+        </select>
+    </div>
+
 </script>
 
 <script type="text/x-red" data-help-name="deduplicate">
