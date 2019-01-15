@@ -16,6 +16,7 @@ module.exports = function (RED) {
         function cacheContains(topic,key,expiry_lifetime) {
             var i;
             var known_entries;
+			var data_changed = false
 
             known_entries = node.storage.get(node.registry+'["'+topic+'"]')
 
@@ -31,7 +32,14 @@ module.exports = function (RED) {
                     known_entries.splice(i, 1);
                     node.storage.set(node.registry+'["'+topic+'"]',known_entries)
                 }
+				// Clean
+				if (expired(known_entries[i])) {
+					known_entries.splice(i, 1);					
+					data_changed=true;
+				}
             }
+			if (data_changed) node.storage.set(node.registry+'["'+topic+'"]',known_entries)
+				
             return false;
         }
 
