@@ -8,7 +8,7 @@
 			expirypolicy: {value:"keep"},
             registryclass: {value:""},
             noderole: {value:"standalone"},
-            expiry: {value: 5, validate:RED.validators.number()}
+            expiry: {value: "5"}
         },
         inputs: 1,
         outputs: 2,
@@ -42,12 +42,12 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-keyproperty"><i class="icon-tag"></i> Msg Key Property</label>
-        <input type="text" id="node-input-keyproperty" placeholder="Msg Key Property (optional)">
+        <label for="node-input-keyproperty"><i class="icon-tag"></i> Payload Key Property for analysis</label>
+        <input type="text" id="node-input-keyproperty" placeholder="Payload Key Property (optional)">
     </div>
     <div class="form-row">
-        <label for="node-input-expiry"><i class="icon-tag"></i> Expiry (seconds)</label>
-        <input type="text" id="node-input-expiry" placeholder="Cache expiry (seconds)">
+        <label for="node-input-expiry"><i class="icon-tag"></i> Expiry (seconds) as digit or Msg Key property</label>
+        <input type="text" id="node-input-expiry" placeholder="Msg Key or Value for Cache expiry (seconds)">
     </div>
 	
 	<div class="form-row">
