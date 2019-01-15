@@ -13,10 +13,33 @@ module.exports = function (RED) {
             return new Date().getTime() > entry.expiry;
         }
 
+		function cacheClean() {
+			var data_changed=false;
+			var i;
+			var known_entries = node.storage.get(node.registry);
+			
+			Object.keys(known_entries).forEach(key => {
+				//console.log(key, known_entries[key])
+				for (i = 0; i < known_entries[key].length; i += 1) {
+					//console.log(known_entries[key][i].expiry)
+					if (expired(known_entries[key][i])) { 
+						known_entries[key].splice(i, 1);
+						data_changed=true;
+					}
+				}
+				// if key is empty, rem
+				if (known_entries[key].length==0) { 
+					delete known_entries[key];
+					data_changed=true;
+				}
+			});
+			
+			if (data_changed) node.storage.set(node.registry,known_entries)
+			
+		}
         function cacheContains(topic,key,expiry_lifetime) {
             var i;
             var known_entries;
-			var data_changed = false
 
             known_entries = node.storage.get(node.registry+'["'+topic+'"]')
 
@@ -32,14 +55,7 @@ module.exports = function (RED) {
                     known_entries.splice(i, 1);
                     node.storage.set(node.registry+'["'+topic+'"]',known_entries)
                 }
-				// Clean
-				if (expired(known_entries[i])) {
-					known_entries.splice(i, 1);					
-					data_changed=true;
-				}
             }
-			if (data_changed) node.storage.set(node.registry+'["'+topic+'"]',known_entries)
-				
             return false;
         }
 
@@ -64,13 +80,16 @@ module.exports = function (RED) {
                 return;
             }
 
-
             var known_values  = node.storage.get(node.registry+'["'+topic+'"]')
 
             if (config.noderole != "deduplicate") {
                 known_values.push({expiry: new Date().getTime() + expiry_lifetime * 1000, key: JSON.stringify(key)});
                 node.storage.set(node.registry+'["'+topic+'"]',known_values)
             }
+			
+			
+			// Clean from time to time
+			if (Math.floor(Math.random() * 3)==1) cacheClean()
 
             node.send([msg, null]);
         });
