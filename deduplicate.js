@@ -13,7 +13,7 @@ module.exports = function (RED) {
             return new Date().getTime() > entry.expiry;
         }
 
-        function cacheContains(topic,key) {
+        function cacheContains(topic,key,expiry_lifetime) {
             var i;
             var known_entries;
 
@@ -23,7 +23,7 @@ module.exports = function (RED) {
                 if (known_entries[i].key === key) {
                     if (!expired(known_entries[i])) {							
 						if (config.expirypolicy=='extend') {
-							known_entries[i].expiry=new Date().getTime() + node.expiry * 1000;
+							known_entries[i].expiry=new Date().getTime() + expiry_lifetime * 1000;
 							node.storage.set(node.registry+'["'+topic+'"]',known_entries)							
 						}
                         return true;
@@ -40,6 +40,7 @@ module.exports = function (RED) {
 
             var key = node.keyproperty ? msg.payload[node.keyproperty] : msg.payload;
             var topic = (msg.topic || "default_topic")
+			var expiry_lifetime = (isNaN(parseInt(node.expiry)) ? null : parseInt(node.expiry))  || (isNaN(parseInt(msg[node.expiry])) ? null : parseInt(msg[node.expiry])) || 5
 
             if (node.storage.get(node.registry) === undefined) {
                 node.storage.set(node.registry,{})
@@ -50,7 +51,7 @@ module.exports = function (RED) {
             }
 
 
-            if (cacheContains(topic, JSON.stringify(key))) {
+            if (cacheContains(topic, JSON.stringify(key),expiry_lifetime)) {
                 node.send([null, msg]);
                 return;
             }
@@ -59,7 +60,7 @@ module.exports = function (RED) {
             var known_values  = node.storage.get(node.registry+'["'+topic+'"]')
 
             if (config.noderole != "deduplicate") {
-                known_values.push({expiry: new Date().getTime() + node.expiry * 1000, key: JSON.stringify(key)});
+                known_values.push({expiry: new Date().getTime() + expiry_lifetime * 1000, key: JSON.stringify(key)});
                 node.storage.set(node.registry+'["'+topic+'"]',known_values)
             }
 
