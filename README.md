@@ -1,8 +1,12 @@
-node-red-contrib-deduplicate
+node-red-contrib-deduplicate-adv
 ============================
+Node-RED node that filters duplicate messages. First output will return non-duplicated values, second one will output duplicated.
 
-Node-RED node that removes duplicate messages.
+Analysis will be done grouped by topic if defined.
+By default payload value is considered for analysis - specific key can be specified in "Msg Key Property".
 
-Added Key Property to specify the property in the payload to compare for de-duplication. Payload is the default key property.
+Node role may be:
+* **Add+Deduplicate within node:** analysis within given inputs of node
+* **Registry class:** Allow addition or analysis upon a centrally managed list of values, cross nodes and based on the defined registry name
 
 ![Example](example.png)
